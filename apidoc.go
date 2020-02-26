@@ -85,8 +85,8 @@ func (api *Api) ApiDoc(reqParams, resParams interface{}) {
 	myJsonEncode(resParams, resKey, &resFieldInfo, resObjectMap)
 	api.ApiParams = reqFieldInfo
 	api.ApiSuccess = resFieldInfo
-	reqString, _ := paramsString(reqParams)
-	resString, _ := paramsString(resParams)
+	reqString := paramsString(reqParams)
+	resString := paramsString(resParams)
 	api.ApiParamExample = reqString
 	api.ApiSuccessExample = resString
 
@@ -113,8 +113,7 @@ func myJsonEncode(obj interface{}, key int, fieldInfo *[]ApiFieldInfo, objectMap
 
 	// 接口是空(没装任何东西的interface{})
 	if obj == nil {
-		//fmt.Println("空接口")
-		return
+		return //fmt.Println("空接口")
 	}
 
 	// 反射变量
@@ -123,8 +122,7 @@ func myJsonEncode(obj interface{}, key int, fieldInfo *[]ApiFieldInfo, objectMap
 	// 如果是指针, 需要取值
 	if objType.Kind() == reflect.Ptr {
 		if objValue.IsNil() { // 空指针
-			//fmt.Println("空指针")
-			return
+			return //fmt.Println("空指针")
 		}
 		objType = objType.Elem()   // 相当于类型为*ptr
 		objValue = objValue.Elem() // 相当于值为*ptr
@@ -181,22 +179,16 @@ func add() string {
 
 func unescaped(str string) template.HTML { return template.HTML(str) }
 
-func paramsString(params interface{}) (res []string, err error) {
+func paramsString(params interface{}) (res []string) {
 
-	b, err := json.Marshal(params)
-	if err != nil {
-		return res, fmt.Errorf("%+v", params)
-	}
+	b, _ := json.Marshal(params)
 	var out bytes.Buffer
-	err = json.Indent(&out, b, "", "    ")
-	if err != nil {
-		return res, fmt.Errorf("%+v", params)
-	}
+	_ = json.Indent(&out, b, "", "    ")
 	content := out.String()
 	data := strings.Split(content, "\n")
 	res = make([]string, 0, len(data))
 	for i := 0; i < len(data); i++ {
 		res = append(res, data[i])
 	}
-	return res, err
+	return res
 }
