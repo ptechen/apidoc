@@ -39,8 +39,7 @@ var apiDocType = map[string]string{
 	"struct":    "Object",
 }
 
-const temp = `
-/**
+const temp = `/**
  * @api { {{.Method}} } {{.Route}}   {{.Desc}}
  * @apiVersion {{.Version}}
  * @apiName {{.ApiName}}
@@ -55,7 +54,7 @@ const temp = `
  */`
 
 type Api struct {
-	Output io.Writer
+	Output            io.Writer
 	Method            string
 	Route             string
 	Desc              string
@@ -90,8 +89,9 @@ func ApiDoc(api *Api, reqParams, resParams interface{}) {
 	resString, _ := paramsString(resParams)
 	api.ApiParamExample = reqString
 	api.ApiSuccessExample = resString
+
 	funcMap := template.FuncMap{"add": add, "unescaped": unescaped}
-	t := template.Must(template.New("base").Funcs(funcMap).Parse(temp))
+	t := template.Must(template.New("template.tpl").Funcs(funcMap).ParseFiles("./template.tpl"))
 	err := t.Execute(api.Output, api)
 	if err != nil {
 		log.Println("executing template:", err)
@@ -153,7 +153,7 @@ func myJsonEncode(obj interface{}, key int, fieldInfo *[]ApiFieldInfo, objectMap
 		fieldType = strings.Trim(fieldType, " ")
 		jsonTag := field.Tag.Get("json")
 		if key > 1 {
-			for i := key; i > key - 1; i-- {
+			for i := key; i > key-1; i-- {
 				jsonTag = objectMap[key-1] + "." + jsonTag
 			}
 		}
@@ -179,7 +179,7 @@ func add() string {
 	return "\t"
 }
 
-func unescaped (str string) template.HTML { return template.HTML(str) }
+func unescaped(str string) template.HTML { return template.HTML(str) }
 
 func paramsString(params interface{}) (res []string, err error) {
 

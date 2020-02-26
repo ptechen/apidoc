@@ -1,0 +1,41 @@
+/**
+ * @api { post } /test   123
+ * @apiVersion v0.0.1
+ * @apiName user
+ * @apiGroup user 
+ * @apiParam { Number } 	 id 	 fsfsfs 
+ * @apiParam { String } 	 name 	 fsfsfs 
+ * @apiParam { Number } 	 age 	 fsfsfs 
+ * @apiParam { Object } 	 xi 	 fsfsfs 
+ * @apiParam { String } 	 xi.name 	 fsfsfs 
+ * @apiParamExample {json} Request-Example:
+ * { 
+ *     "id": 0, 
+ *     "name": "", 
+ *     "age": 0, 
+ *     "xi": { 
+ *         "name": "" 
+ *     } 
+ * } 
+ * 
+ * @apiSuccess { Number } 	 id 	 fsfsfs
+ * @apiSuccess { String } 	 name 	 fsfsfs
+ * @apiSuccess { Number } 	 age 	 fsfsfs
+ * @apiSuccess { Object } 	 xi 	 fsfsfs
+ * @apiSuccess { String } 	 xi.name 	 fsfsfs
+ * @apiSuccess { Object } 	 xi.info 	 user_info
+ * @apiSuccess { Number } 	 xi.info.age 	 age
+ * @apiSuccessExample {json} Request-Example:
+ * { 
+ *     "id": 0, 
+ *     "name": "", 
+ *     "age": 0, 
+ *     "xi": { 
+ *         "name": "", 
+ *         "info": { 
+ *             "age": 0 
+ *         } 
+ *     } 
+ * } 
+ */
+
