@@ -74,7 +74,7 @@ type ApiFieldInfo struct {
 	Comment   string
 }
 
-func ApiDoc(api *Api, reqParams, resParams interface{}) {
+func (api *Api) ApiDoc(reqParams, resParams interface{}) {
 	reqFieldInfo := make([]ApiFieldInfo, 0, 20)
 	resFieldInfo := make([]ApiFieldInfo, 0, 20)
 	reqObjectMap := make(map[int]string)

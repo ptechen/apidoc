@@ -3,11 +3,11 @@
  * @apiVersion v0.0.1
  * @apiName user
  * @apiGroup user 
- * @apiParam { Number } 	 id 	 fsfsfs 
- * @apiParam { String } 	 name 	 fsfsfs 
- * @apiParam { Number } 	 age 	 fsfsfs 
- * @apiParam { Object } 	 xi 	 fsfsfs 
- * @apiParam { String } 	 xi.name 	 fsfsfs 
+ * @apiParam { Number } 	 id 	 test 
+ * @apiParam { String } 	 name 	 test 
+ * @apiParam { Number } 	 age 	 test 
+ * @apiParam { Object } 	 xi 	 test 
+ * @apiParam { String } 	 xi.name 	 test 
  * @apiParamExample {json} Request-Example:
  * { 
  *     "id": 0, 
@@ -18,11 +18,11 @@
  *     } 
  * } 
  * 
- * @apiSuccess { Number } 	 id 	 fsfsfs
- * @apiSuccess { String } 	 name 	 fsfsfs
- * @apiSuccess { Number } 	 age 	 fsfsfs
- * @apiSuccess { Object } 	 xi 	 fsfsfs
- * @apiSuccess { String } 	 xi.name 	 fsfsfs
+ * @apiSuccess { Number } 	 id 	 test
+ * @apiSuccess { String } 	 name 	 test
+ * @apiSuccess { Number } 	 age 	 test
+ * @apiSuccess { Object } 	 xi 	 test
+ * @apiSuccess { String } 	 xi.name 	 test
  * @apiSuccess { Object } 	 xi.info 	 user_info
  * @apiSuccess { Number } 	 xi.info.age 	 age
  * @apiSuccessExample {json} Request-Example:

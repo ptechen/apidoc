@@ -6,26 +6,26 @@ import (
 )
 
 type ReqParams struct {
-	Id    int    `json:"id" comment:"fsfsfs"`
-	Name  string `json:"name" comment:"fsfsfs"`
+	Id    int    `json:"id" comment:"test"`
+	Name  string `json:"name" comment:"test"`
 	inner string
-	Age   int `json:"age" comment:"fsfsfs"`
+	Age   int `json:"age" comment:"test"`
 	Xi    struct {
-		Name string `json:"name" comment:"fsfsfs"`
-	} `json:"xi" comment:"fsfsfs"`
+		Name string `json:"name" comment:"test"`
+	} `json:"xi" comment:"test"`
 }
 
 type ResParams struct {
-	Id    int    `json:"id" comment:"fsfsfs"`
-	Name  string `json:"name" comment:"fsfsfs"`
+	Id    int    `json:"id" comment:"test"`
+	Name  string `json:"name" comment:"test"`
 	inner string
-	Age   int `json:"age" comment:"fsfsfs"`
+	Age   int `json:"age" comment:"test"`
 	Xi    struct {
-		Name string `json:"name" comment:"fsfsfs"`
+		Name string `json:"name" comment:"test"`
 		Info struct {
 			Age int `json:"age" comment:"age"`
 		} `json:"info" comment:"user_info"`
-	} `json:"xi" comment:"fsfsfs"`
+	} `json:"xi" comment:"test"`
 }
 
 func TestApiDoc(t *testing.T) {
@@ -41,5 +41,5 @@ func TestApiDoc(t *testing.T) {
 		ApiName:  "user",
 		ApiGroup: "user",
 	}
-	ApiDoc(api, req, res)
+	api.ApiDoc(req, res)
 }
