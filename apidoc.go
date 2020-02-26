@@ -3,7 +3,6 @@ package apidoc
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"html/template"
 	"io"
@@ -111,7 +110,7 @@ func myJsonEncode(obj interface{}, key int, fieldInfo *[]ApiFieldInfo, objectMap
 
 	// 接口是空(没装任何东西的interface{})
 	if obj == nil {
-		return errors.New("空接口")
+		return nil
 	}
 
 	// 反射变量
@@ -120,7 +119,7 @@ func myJsonEncode(obj interface{}, key int, fieldInfo *[]ApiFieldInfo, objectMap
 	// 如果是指针, 需要取值
 	if objType.Kind() == reflect.Ptr {
 		if objValue.IsNil() {
-			return errors.New("空指针") // 空指针
+			return nil // 空指针
 		}
 
 		objType = objType.Elem()   // 相当于类型为*ptr
