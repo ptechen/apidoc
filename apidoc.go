@@ -8,6 +8,7 @@ import (
 	"io"
 	"reflect"
 	"strings"
+	"sync"
 	"unicode"
 )
 
@@ -78,14 +79,33 @@ func (api *Api) ApiDoc(reqParams, resParams interface{}) error {
 	resFieldInfo := make([]ApiFieldInfo, 0, 20)
 	reqObjectMap := make(map[int]string)
 	resObjectMap := make(map[int]string)
+	var reqString []string
+	var resString []string
 	reqKey := 0
 	resKey := 0
-	myJsonEncode(reqParams, reqKey, &reqFieldInfo, reqObjectMap)
-	myJsonEncode(resParams, resKey, &resFieldInfo, resObjectMap)
+	wg := sync.WaitGroup{}
+	wg.Add(4)
+	go func() {
+		myJsonEncode(reqParams, reqKey, &reqFieldInfo, reqObjectMap)
+		wg.Done()
+	}()
+	go func() {
+		myJsonEncode(resParams, resKey, &resFieldInfo, resObjectMap)
+		wg.Done()
+	}()
+
+	go func() {
+		reqString = paramsString(reqParams)
+		wg.Done()
+	}()
+	go func() {
+		resString = paramsString(resParams)
+		wg.Done()
+	}()
+
+	wg.Wait()
 	api.ApiParams = reqFieldInfo
 	api.ApiSuccess = resFieldInfo
-	reqString := paramsString(reqParams)
-	resString := paramsString(resParams)
 	api.ApiParamExample = reqString
 	api.ApiSuccessExample = resString
 
@@ -95,7 +115,7 @@ func (api *Api) ApiDoc(reqParams, resParams interface{}) error {
 	return err
 }
 
-func myJsonEncode(obj interface{}, key int, fieldInfo *[]ApiFieldInfo, objectMap map[int]string) error {
+func myJsonEncode(obj interface{}, key int, fieldInfo *[]ApiFieldInfo, objectMap map[int]string) {
 	var (
 		i int
 
@@ -110,7 +130,7 @@ func myJsonEncode(obj interface{}, key int, fieldInfo *[]ApiFieldInfo, objectMap
 
 	// 接口是空(没装任何东西的interface{})
 	if obj == nil {
-		return nil
+		return
 	}
 
 	// 反射变量
@@ -119,7 +139,7 @@ func myJsonEncode(obj interface{}, key int, fieldInfo *[]ApiFieldInfo, objectMap
 	// 如果是指针, 需要取值
 	if objType.Kind() == reflect.Ptr {
 		if objValue.IsNil() {
-			return nil // 空指针
+			return // 空指针
 		}
 
 		objType = objType.Elem()   // 相当于类型为*ptr
@@ -129,7 +149,7 @@ func myJsonEncode(obj interface{}, key int, fieldInfo *[]ApiFieldInfo, objectMap
 	// 如果不是结构体, 则不需要递归处理
 	if objType.Kind() != reflect.Struct {
 		//fmt.Println("普通值", objValue.Interface())
-		return nil
+		return
 	}
 
 	// 递归处理结构体中的字段
@@ -169,7 +189,6 @@ func myJsonEncode(obj interface{}, key int, fieldInfo *[]ApiFieldInfo, objectMap
 		//递归编码这个字段
 		myJsonEncode(fieldValue.Interface(), key, fieldInfo, objectMap)
 	}
-	return nil
 }
 
 func add() string {
