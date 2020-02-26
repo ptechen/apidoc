@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"html/template"
 	"io"
-	"log"
 	"reflect"
 	"strings"
 	"unicode"
@@ -74,7 +73,7 @@ type ApiFieldInfo struct {
 	Comment   string
 }
 
-func (api *Api) ApiDoc(reqParams, resParams interface{}) {
+func (api *Api) ApiDoc(reqParams, resParams interface{}) error {
 	reqFieldInfo := make([]ApiFieldInfo, 0, 20)
 	resFieldInfo := make([]ApiFieldInfo, 0, 20)
 	reqObjectMap := make(map[int]string)
@@ -93,12 +92,10 @@ func (api *Api) ApiDoc(reqParams, resParams interface{}) {
 	funcMap := template.FuncMap{"add": add, "unescaped": unescaped}
 	t := template.Must(template.New("template.tpl").Funcs(funcMap).ParseFiles("./template.tpl"))
 	err := t.Execute(api.Output, api)
-	if err != nil {
-		log.Println("executing template:", err)
-	}
+	return err
 }
 
-func myJsonEncode(obj interface{}, key int, fieldInfo *[]ApiFieldInfo, objectMap map[int]string) {
+func myJsonEncode(obj interface{}, key int, fieldInfo *[]ApiFieldInfo, objectMap map[int]string) error {
 	var (
 		i int
 
@@ -113,7 +110,7 @@ func myJsonEncode(obj interface{}, key int, fieldInfo *[]ApiFieldInfo, objectMap
 
 	// 接口是空(没装任何东西的interface{})
 	if obj == nil {
-		return //fmt.Println("空接口")
+		return  fmt.Errorf(	"空接口")
 	}
 
 	// 反射变量
@@ -122,7 +119,7 @@ func myJsonEncode(obj interface{}, key int, fieldInfo *[]ApiFieldInfo, objectMap
 	// 如果是指针, 需要取值
 	if objType.Kind() == reflect.Ptr {
 		if objValue.IsNil() { // 空指针
-			return //fmt.Println("空指针")
+			return fmt.Errorf("空指针")
 		}
 		objType = objType.Elem()   // 相当于类型为*ptr
 		objValue = objValue.Elem() // 相当于值为*ptr
@@ -131,7 +128,7 @@ func myJsonEncode(obj interface{}, key int, fieldInfo *[]ApiFieldInfo, objectMap
 	// 如果不是结构体, 则不需要递归处理
 	if objType.Kind() != reflect.Struct {
 		//fmt.Println("普通值", objValue.Interface())
-		return
+		return nil
 	}
 
 	// 递归处理结构体中的字段
@@ -171,6 +168,7 @@ func myJsonEncode(obj interface{}, key int, fieldInfo *[]ApiFieldInfo, objectMap
 		//递归编码这个字段
 		myJsonEncode(fieldValue.Interface(), key, fieldInfo, objectMap)
 	}
+	return nil
 }
 
 func add() string {
