@@ -199,7 +199,7 @@ func myJsonEncode(obj interface{}, key int, fieldInfo *[]ApiFieldInfo, objectMap
 		jsonTag := field.Tag.Get("json")
 		if key > 1 {
 			for i := key; i > key-1; i-- {
-				if objectMap[key - 1] != "" {
+				if objectMap[key-1] != "" {
 					jsonTag = objectMap[key-1] + "." + jsonTag
 				}
 			}
@@ -207,10 +207,10 @@ func myJsonEncode(obj interface{}, key int, fieldInfo *[]ApiFieldInfo, objectMap
 		comment := field.Tag.Get("comment")
 		if strings.Contains(fieldType, "[]") && strings.Contains(fieldType, ".") {
 			fieldType = "[]struct"
-		}else if strings.Contains(fieldType, "*") && strings.Contains(fieldType, ".") {
+		} else if strings.Contains(fieldType, "*") && strings.Contains(fieldType, ".") {
 			fieldType = "struct"
 			objectMap[key] = jsonTag
-		}else if strings.Contains(fieldType, "struct") && strings.Contains(fieldType, ".") {
+		} else if strings.Contains(fieldType, "struct") && strings.Contains(fieldType, ".") {
 			fieldType = "struct"
 			objectMap[key] = jsonTag
 		} else if strings.Contains(fieldType, ".") {
