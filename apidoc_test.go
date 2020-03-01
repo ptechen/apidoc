@@ -140,16 +140,54 @@ func TestApiDoc3(t *testing.T) {
 }
 
 type ReqParams4 struct {
-	Req []ReqParams
+	Req []ReqParams `json:"req"`
 }
 
 type ResParams4 struct {
-	Res []ResParams
+	Res []ResParams `json:"res"`
 }
 
 func TestApiDoc4(t *testing.T) {
-	req := ReqParams4{Req: []ReqParams{}}
-	res := ResParams4{Res: []ResParams{}}
+	req := ReqParams4{Req: []ReqParams{{
+		String:       "",
+		Int:          0,
+		Int8:         0,
+		Int16:        0,
+		Int32:        0,
+		Int64:        0,
+		Uint:         0,
+		Uint8:        0,
+		Uint16:       0,
+		Uint32:       0,
+		Uint64:       0,
+		Bool:         false,
+		Float64:      0,
+		Float32:      0,
+		MapString:    nil,
+		MapInt:       nil,
+		MapIntString: nil,
+		MapStringInt: nil,
+	}}}
+	res := ResParams4{Res: []ResParams{{
+		String:       "",
+		Int:          0,
+		Int8:         0,
+		Int16:        0,
+		Int32:        0,
+		Int64:        0,
+		Uint:         0,
+		Uint8:        0,
+		Uint16:       0,
+		Uint32:       0,
+		Uint64:       0,
+		Bool:         false,
+		Float64:      0,
+		Float32:      0,
+		MapString:    nil,
+		MapInt:       nil,
+		MapIntString: nil,
+		MapStringInt: nil,
+	}}}
 	f, _ := os.Create("./apidoc/apidoc4")
 	api := &Api{
 		Output:   f,
