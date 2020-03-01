@@ -12,70 +12,6 @@ import (
 	"unicode"
 )
 
-var apiDocType = map[string]string{
-	"uint8":     "Number",
-	"uint16":    "Number",
-	"uint32":    "Number",
-	"uint64":    "Number",
-	"uint":      "Number",
-	"int":       "Number",
-	"int8":      "Number",
-	"int16":     "Number",
-	"int32":     "Number",
-	"int64":     "Number",
-	"*uint8":    "Number",
-	"*uint16":   "Number",
-	"*uint32":   "Number",
-	"*uint64":   "Number",
-	"*int":      "Number",
-	"*int8":     "Number",
-	"*int16":    "Number",
-	"*int32":    "Number",
-	"*int64":    "Number",
-	"bool":      "Boolean",
-	"string":    "String",
-	"time.Time": "String",
-	"float32":   "Float",
-	"float64":   "Float",
-	"struct":    "Object",
-
-	"[]uint8":     "Number[]",
-	"[]uint16":    "Number[]",
-	"[]uint32":    "Number[]",
-	"[]uint64":    "Number[]",
-	"[]int":       "Number[]",
-	"[]int8":      "Number[]",
-	"[]int16":     "Number[]",
-	"[]int32":     "Number[]",
-	"[]int64":     "Number[]",
-	"[]bool":      "Boolean[]",
-	"[]string":    "String[]",
-	"[]time.Time": "time[]",
-	"[]float32":   "Float[]",
-	"[]float64":   "Float[]",
-	"[]struct":    "Object[]",
-
-	"map[int]int":       "Map[Number]Int",
-	"map[int]string":    "Map[Number]String",
-	"map[string]int":    "Map[String]Int",
-	"map[string]string": "Map[String]String",
-	"map[int8]int8":     "Map[Number]Int",
-	"map[int8]string":   "Map[Number]String",
-	"map[string]int8":   "Map[String]Int",
-
-	"map[int16]int16":  "Map[Number]Int",
-	"map[int16]string": "Map[Number]String",
-	"map[string]int16": "Map[String]Int",
-
-	"map[int32]int32":  "Map[Number]Int",
-	"map[int32]string": "Map[Number]String",
-	"map[string]int32": "Map[String]Int",
-
-	"map[int64]int64":  "Map[Number]Int",
-	"map[int64]string": "Map[Number]String",
-	"map[string]int64": "Map[String]Int",
-}
-
 type Api struct {
 	Output            io.Writer
 	Method            string
@@ -133,7 +69,7 @@ func (api *Api) ApiDoc(reqParams, resParams interface{}) error {
 	api.ApiSuccessExample = resString
 
 	funcMap := template.FuncMap{"add": add, "unescaped": unescaped}
-	t := template.Must(template.New("template.tpl").Funcs(funcMap).ParseFiles("./template.tpl"))
+	t := template.Must(template.New("template.tpl").Funcs(funcMap).Parse(tpl))
 	err := t.Execute(api.Output, api)
 	return err
 }
