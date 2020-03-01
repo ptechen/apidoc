@@ -1,0 +1,92 @@
+/**
+ * @api { post } /test   123
+ * @apiVersion v0.0.1
+ * @apiName user
+ * @apiGroup user 
+ * @apiParam { Object } 	 req 	  
+ * @apiParam { String } 	 req.string 	 test string 
+ * @apiParam { Number } 	 req.int 	 test int 
+ * @apiParam { Number } 	 req.int_8 	 test int8 
+ * @apiParam { Number } 	 req.int_16 	 test int16 
+ * @apiParam { Number } 	 req.int_32 	 test int32 
+ * @apiParam { Number } 	 req.int_64 	 test int64 
+ * @apiParam { Number } 	 req.uint 	 test uint 
+ * @apiParam { Number } 	 req.uint_8 	 test uint8 
+ * @apiParam { Number } 	 req.uint_16 	 test uint16 
+ * @apiParam { Number } 	 req.uint_32 	 test uint32 
+ * @apiParam { Number } 	 req.uint_64 	 test uint64 
+ * @apiParam { Boolean } 	 req.bool 	 test bool 
+ * @apiParam { Float } 	 req.float_64 	 test float64 
+ * @apiParam { Float } 	 req.float_32 	 test float32 
+ * @apiParam { Map[String]String } 	 req.map_string 	 test map[string]string 
+ * @apiParam { Map[Number]Int } 	 req.map_int 	 test map[int]int 
+ * @apiParam { Map[Number]String } 	 req.map_int_string 	 test map[int]string 
+ * @apiParam { Map[String]Int } 	 req.map_string_int 	 test map[string]int 
+ * @apiParamExample {json} Request-Example:
+ * { 
+ *     "req": { 
+ *         "string": "", 
+ *         "int": 0, 
+ *         "int_8": 0, 
+ *         "int_16": 0, 
+ *         "int_32": 0, 
+ *         "int_64": 0, 
+ *         "uint": 0, 
+ *         "uint_8": 0, 
+ *         "uint_16": 0, 
+ *         "uint_32": 0, 
+ *         "uint_64": 0, 
+ *         "bool": false, 
+ *         "float_64": 0, 
+ *         "float_32": 0, 
+ *         "map_string": {}, 
+ *         "map_int": {}, 
+ *         "map_int_string": {}, 
+ *         "map_string_int": {} 
+ *     } 
+ * } 
+ * 
+ * @apiSuccess { Object } 	 res 	 
+ * @apiSuccess { String } 	 res.string 	 test string
+ * @apiSuccess { Number } 	 res.int 	 test int
+ * @apiSuccess { Number } 	 res.int_8 	 test int8
+ * @apiSuccess { Number } 	 res.int_16 	 test int16
+ * @apiSuccess { Number } 	 res.int_32 	 test int32
+ * @apiSuccess { Number } 	 res.int_64 	 test int64
+ * @apiSuccess { Number } 	 res.uint 	 test uint
+ * @apiSuccess { Number } 	 res.uint_8 	 test uint8
+ * @apiSuccess { Number } 	 res.uint_16 	 test uint16
+ * @apiSuccess { Number } 	 res.uint_32 	 test uint32
+ * @apiSuccess { Number } 	 res.uint_64 	 test uint64
+ * @apiSuccess { Boolean } 	 res.bool 	 test bool
+ * @apiSuccess { Float } 	 res.float_64 	 test float64
+ * @apiSuccess { Float } 	 res.float_32 	 test float32
+ * @apiSuccess { Map[String]String } 	 res.map_string 	 test map[string]string
+ * @apiSuccess { Map[Number]Int } 	 res.map_int 	 test map[int]int
+ * @apiSuccess { Map[Number]String } 	 res.map_int_string 	 test map[int]string
+ * @apiSuccess { Map[String]Int } 	 res.map_string_int 	 test map[string]int
+ * @apiSuccessExample {json} Request-Example:
+ * { 
+ *     "res": { 
+ *         "string": "", 
+ *         "int": 0, 
+ *         "int_8": 0, 
+ *         "int_16": 0, 
+ *         "int_32": 0, 
+ *         "int_64": 0, 
+ *         "uint": 0, 
+ *         "uint_8": 0, 
+ *         "uint_16": 0, 
+ *         "uint_32": 0, 
+ *         "uint_64": 0, 
+ *         "bool": false, 
+ *         "float_64": 0, 
+ *         "float_32": 0, 
+ *         "map_string": {}, 
+ *         "map_int": {}, 
+ *         "map_int_string": {}, 
+ *         "map_string_int": {} 
+ *     } 
+ * } 
+ */
+

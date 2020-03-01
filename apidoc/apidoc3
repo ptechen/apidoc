@@ -1,8 +1,9 @@
 /**
- * @api { post } /test1   123
+ * @api { post } /test   123
  * @apiVersion v0.0.1
  * @apiName user
  * @apiGroup user 
+ * @apiParam { Object } 	  	  
  * @apiParam { String } 	 string 	 test string 
  * @apiParam { Number } 	 int 	 test int 
  * @apiParam { Number } 	 int_8 	 test int8 
@@ -43,6 +44,7 @@
  *     "map_string_int": {} 
  * } 
  * 
+ * @apiSuccess { Object } 	  	 
  * @apiSuccess { String } 	 string 	 test string
  * @apiSuccess { Number } 	 int 	 test int
  * @apiSuccess { Number } 	 int_8 	 test int8

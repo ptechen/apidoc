@@ -1,0 +1,18 @@
+/**
+ * @api { post } /test   123
+ * @apiVersion v0.0.1
+ * @apiName user
+ * @apiGroup user 
+ * @apiParam { Object[] } 	  	  
+ * @apiParamExample {json} Request-Example:
+ * { 
+ *     "Req": [] 
+ * } 
+ * 
+ * @apiSuccess { Object[] } 	  	 
+ * @apiSuccessExample {json} Request-Example:
+ * { 
+ *     "Res": [] 
+ * } 
+ */
+

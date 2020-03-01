@@ -17,6 +17,7 @@ var apiDocType = map[string]string{
 	"uint16":    "Number",
 	"uint32":    "Number",
 	"uint64":    "Number",
+	"uint":      "Number",
 	"int":       "Number",
 	"int8":      "Number",
 	"int16":     "Number",
@@ -34,24 +35,46 @@ var apiDocType = map[string]string{
 	"bool":      "Boolean",
 	"string":    "String",
 	"time.Time": "String",
-	"float32":   "Float32",
-	"float64":   "Float64",
+	"float32":   "Float",
+	"float64":   "Float",
 	"struct":    "Object",
-}
 
-const temp = `/**
- * @api { {{.Method}} } {{.Route}}   {{.Desc}}
- * @apiVersion {{.Version}}
- * @apiName {{.ApiName}}
- * @apiGroup {{.ApiGroup}} {{range .ApiParams}}
- * @apiParam { {{.FieldType}} } {{ add }} {{ .Json }} {{ add }} {{ .Comment }} {{end}}
- * @apiParamExample {json} Request-Example:{{range .ApiParamExample}}
- * {{unescaped .}} {{end}}
- * {{range .ApiSuccess}}
- * @apiSuccess { {{.FieldType}} } {{ add }} {{ .Json }} {{ add }} {{.Comment}}{{end}}
- * @apiSuccessExample {json} Request-Example:{{range .ApiSuccessExample}}
- * {{unescaped .}} {{end}}
- */`
+	"[]uint8":     "Number[]",
+	"[]uint16":    "Number[]",
+	"[]uint32":    "Number[]",
+	"[]uint64":    "Number[]",
+	"[]int":       "Number[]",
+	"[]int8":      "Number[]",
+	"[]int16":     "Number[]",
+	"[]int32":     "Number[]",
+	"[]int64":     "Number[]",
+	"[]bool":      "Boolean[]",
+	"[]string":    "String[]",
+	"[]time.Time": "time[]",
+	"[]float32":   "Float[]",
+	"[]float64":   "Float[]",
+	"[]struct":    "Object[]",
+
+	"map[int]int":       "Map[Number]Int",
+	"map[int]string":    "Map[Number]String",
+	"map[string]int":    "Map[String]Int",
+	"map[string]string": "Map[String]String",
+	"map[int8]int8":     "Map[Number]Int",
+	"map[int8]string":   "Map[Number]String",
+	"map[string]int8":   "Map[String]Int",
+
+	"map[int16]int16":  "Map[Number]Int",
+	"map[int16]string": "Map[Number]String",
+	"map[string]int16": "Map[String]Int",
+
+	"map[int32]int32":  "Map[Number]Int",
+	"map[int32]string": "Map[Number]String",
+	"map[string]int32": "Map[String]Int",
+
+	"map[int64]int64":  "Map[Number]Int",
+	"map[int64]string": "Map[Number]String",
+	"map[string]int64": "Map[String]Int",
+}
 
 type Api struct {
 	Output            io.Writer
@@ -148,7 +171,13 @@ func myJsonEncode(obj interface{}, key int, fieldInfo *[]ApiFieldInfo, objectMap
 
 	// 如果不是结构体, 则不需要递归处理
 	if objType.Kind() != reflect.Struct {
-		//fmt.Println("普通值", objValue.Interface())
+		//if  objType.Kind() == reflect.Slice {
+		//	objValue = reflect.ValueOf(obj).Elem()
+		//	objType = reflect.TypeOf(objValue)
+		//} else {
+		//	//fmt.Println("普通值", objValue.Interface())
+		//	return
+		//}
 		return
 	}
 
@@ -170,15 +199,27 @@ func myJsonEncode(obj interface{}, key int, fieldInfo *[]ApiFieldInfo, objectMap
 		jsonTag := field.Tag.Get("json")
 		if key > 1 {
 			for i := key; i > key-1; i-- {
-				jsonTag = objectMap[key-1] + "." + jsonTag
+				if objectMap[key - 1] != "" {
+					jsonTag = objectMap[key-1] + "." + jsonTag
+				}
 			}
 		}
 		comment := field.Tag.Get("comment")
-		if strings.Contains(fieldType, "struct") ||
-			strings.Contains(fieldType, ".") {
-			objectMap[key] = jsonTag
+		if strings.Contains(fieldType, "[]") && strings.Contains(fieldType, ".") {
+			fieldType = "[]struct"
+		}else if strings.Contains(fieldType, "*") && strings.Contains(fieldType, ".") {
 			fieldType = "struct"
+			objectMap[key] = jsonTag
+		}else if strings.Contains(fieldType, "struct") && strings.Contains(fieldType, ".") {
+			fieldType = "struct"
+			objectMap[key] = jsonTag
+		} else if strings.Contains(fieldType, ".") {
+			fieldType = "struct"
+			objectMap[key] = jsonTag
+		} else {
+
 		}
+
 		//fmt.Println("Field", field.Name, "类型:", field.Type, "标签:", field.Tag)
 		*fieldInfo = append(*fieldInfo, ApiFieldInfo{
 			FieldType: apiDocType[fieldType],
@@ -202,7 +243,7 @@ func paramsString(params interface{}) (res []string) {
 	b, _ := json.Marshal(params)
 	var out bytes.Buffer
 	_ = json.Indent(&out, b, "", "    ")
-	content := out.String()
+	content := strings.ReplaceAll(out.String(), "null", "{}")
 	data := strings.Split(content, "\n")
 	res = make([]string, 0, len(data))
 	for i := 0; i < len(data); i++ {
